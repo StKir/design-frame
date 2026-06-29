@@ -46,11 +46,27 @@ npm run build
 
 Сайт: `https://stkir.github.io/design-frame/`
 
-1. В репозитории: **Settings → Pages → Build and deployment → Source: GitHub Actions**
-2. Запушьте `main` — workflow `.github/workflows/deploy-pages.yml` соберёт статику и задеплоит
-3. Локальная проверка pages-сборки: `npm run build:pages`
+### Деплой с локалки (одна команда)
 
-Сборка для Pages — SPA (`ssr: false`) с `basename: /design-frame/`. Не используйте папку `/docs` на ветке — GitHub покажет README вместо приложения.
+```bash
+yarn deploy
+# или: npm run deploy
+```
+
+Скрипт собирает `build/pages` и пушит в ветку `gh-pages`.
+
+### Настройки репозитория (один раз)
+
+1. **Settings → Pages → Build and deployment**
+2. Source: **Deploy from a branch** (не GitHub Actions)
+3. Branch: **`gh-pages`** → **`/ (root)`**
+4. В **Actions** отмени/удали старые workflow Pages, если они ещё запускаются
+
+Если видишь `deployment_queued` в GitHub Actions — это старый CI. Он не нужен: переключи Source на ветку `gh-pages` и деплой только через `yarn deploy`.
+
+Локальная проверка сборки: `npm run build:pages`
+
+Сборка для Pages — SPA (`ssr: false`) с `basename: /design-frame/`.
 
 ## Deployment (Docker)
 
