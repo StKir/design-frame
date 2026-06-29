@@ -16,21 +16,18 @@ export const meta = ({ params }: Route.MetaArgs) => {
   ];
 };
 
-export const loader = ({ params }: Route.LoaderArgs) => {
+const FramePage = ({ params }: Route.ComponentProps) => {
   const frame = getFrameById(params.frameId);
 
   if (!frame) {
-    throw new Response("Not Found", { status: 404 });
-  }
-
-  return { frameId: frame.id };
-};
-
-const FramePage = ({ loaderData }: Route.ComponentProps) => {
-  const frame = getFrameById(loaderData.frameId);
-
-  if (!frame) {
-    return null;
+    return (
+      <main className="min-h-screen bg-gray-50 px-6 py-12 dark:bg-gray-950">
+        <div className="mx-auto max-w-4xl">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">404</h1>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">Фрейм не найден</p>
+        </div>
+      </main>
+    );
   }
 
   const FrameComponent = frame.component;

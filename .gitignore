@@ -5,3 +5,7 @@
 # React Router
 /.react-router/
 /build/
+/build/pages/
+
+# Legacy manual GitHub Pages output
+/docs/

@@ -42,9 +42,17 @@ Create a production build:
 npm run build
 ```
 
-## Deployment
+## GitHub Pages
 
-### Docker Deployment
+Сайт: `https://stkir.github.io/design-frame/`
+
+1. В репозитории: **Settings → Pages → Build and deployment → Source: GitHub Actions**
+2. Запушьте `main` — workflow `.github/workflows/deploy-pages.yml` соберёт статику и задеплоит
+3. Локальная проверка pages-сборки: `npm run build:pages`
+
+Сборка для Pages — SPA (`ssr: false`) с `basename: /design-frame/`. Не используйте папку `/docs` на ветке — GitHub покажет README вместо приложения.
+
+## Deployment (Docker)
 
 To build and run using Docker:
 
