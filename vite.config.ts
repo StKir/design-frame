@@ -1,13 +1,19 @@
-import { reactRouter } from "@react-router/dev/vite";
-import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from "vite";
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const isGitHubPages = process.env.GITHUB_PAGES === "true";
+import { reactRouter } from '@react-router/dev/vite';
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vite';
+
+const appDir = path.dirname(fileURLToPath(import.meta.url));
+const isGitHubPages = process.env.GITHUB_PAGES === 'true';
 
 export default defineConfig({
-  base: isGitHubPages ? "/design-frame/" : "/",
+  base: isGitHubPages ? '/design-frame/' : '/',
   plugins: [tailwindcss(), reactRouter()],
   resolve: {
-    tsconfigPaths: true,
+    alias: {
+      '~': path.resolve(appDir, 'app'),
+    },
   },
 });
