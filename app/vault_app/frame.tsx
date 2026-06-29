@@ -10,7 +10,7 @@ import './vault.css';
 
 export const VaultFrame = () => (
   <div className='vault-root vault-showcase grid grid-cols-2 gap-10'>
-    <PhoneFrame label='Мои контейнеры'>
+    <PhoneFrame label='Мои контейнер'>
       <ContainersScreen />
     </PhoneFrame>
     <PhoneFrame label='Контейнер · Данные'>
