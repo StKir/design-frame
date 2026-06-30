@@ -4,12 +4,7 @@ import { PhoneFrame } from '~/components/phone-frame';
 import { addons, sweetItems } from '~/cantata_app/data/addons';
 import { getCartCount, getCartItemKey } from '~/cantata_app/data/cart';
 import { getDrinkById, getVolumePrice } from '~/cantata_app/data/drinks';
-import type {
-  CantataScreen,
-  CantataTab,
-  CartItem,
-  CatalogCategory,
-} from '~/cantata_app/types';
+import type { CantataScreen, CantataTab, CartItem, CatalogCategory } from '~/cantata_app/types';
 
 import './cantata.css';
 
@@ -67,10 +62,7 @@ export const CantataFrame = () => {
   const [activeTab, setActiveTab] = useState<CantataTab>('home');
   const [selectedDrinkId, setSelectedDrinkId] = useState<string>('cherry-patchouli');
   const [selectedVolume, setSelectedVolume] = useState(400);
-  const [selectedAddonIds, setSelectedAddonIds] = useState<string[]>([
-    'cow-milk',
-    'brazil-coffee',
-  ]);
+  const [selectedAddonIds, setSelectedAddonIds] = useState<string[]>(['cow-milk', 'brazil-coffee']);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [catalogFilter, setCatalogFilter] = useState<CatalogCategory | undefined>();
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -105,15 +97,12 @@ export const CantataFrame = () => {
 
       setCart((prev) => {
         const existing = prev.find(
-          (item) =>
-            getCartItemKey(item.drinkId, item.volume, item.addonIds) === key,
+          (item) => getCartItemKey(item.drinkId, item.volume, item.addonIds) === key,
         );
 
         if (existing) {
           return prev.map((item) =>
-            item.id === existing.id
-              ? { ...item, quantity: item.quantity + quantity }
-              : item,
+            item.id === existing.id ? { ...item, quantity: item.quantity + quantity } : item,
           );
         }
 
@@ -216,9 +205,7 @@ export const CantataFrame = () => {
       return;
     }
 
-    setCart((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity } : item)),
-    );
+    setCart((prev) => prev.map((item) => (item.id === id ? { ...item, quantity } : item)));
   };
 
   const handleRemoveItem = (id: string) => {
@@ -359,14 +346,17 @@ export const CantataFrame = () => {
   );
 
   const renderPreviewScreen = (previewScreen: CantataScreen) => {
-    const previewDrink = getDrinkById('cherry-patchouli') ?? selectedDrink;
+    const previewDrink = selectedDrink;
+    const syncedCart = cart.length > 0 ? cart : previewCart;
+    const syncedCartCount = getCartCount(syncedCart);
+    const syncedCatalogFilter = catalogFilter ?? 'coffee';
 
     return (
       <div className='cantata-root relative h-full overflow-hidden'>
         {previewScreen === 'home' && (
           <HomeScreen
-            activeTab='home'
-            cartCount={2}
+            activeTab={activeTab}
+            cartCount={cartCount}
             onTabChange={noopTab}
             onOpenCatalog={noop}
             onSelectDrink={noop}
@@ -375,7 +365,7 @@ export const CantataFrame = () => {
         {previewScreen === 'catalogSections' && (
           <CatalogSectionsScreen
             activeTab='catalog'
-            cartCount={2}
+            cartCount={syncedCartCount}
             onBack={noop}
             onTabChange={noopTab}
             onOpenCategory={noop}
@@ -385,8 +375,8 @@ export const CantataFrame = () => {
         {previewScreen === 'catalog' && (
           <CatalogScreen
             activeTab='catalog'
-            cartCount={2}
-            initialCategory='coffee'
+            cartCount={syncedCartCount}
+            initialCategory={syncedCatalogFilter}
             onTabChange={noopTab}
             onBack={noop}
             onSelectDrink={noop}
@@ -404,8 +394,8 @@ export const CantataFrame = () => {
         {previewScreen === 'ingredients' && (
           <IngredientsScreen
             drink={previewDrink}
-            volume={400}
-            selectedAddonIds={previewAddonIds}
+            volume={selectedVolume}
+            selectedAddonIds={selectedAddonIds.length > 0 ? selectedAddonIds : previewAddonIds}
             onBack={noop}
             onChange={noop}
             onContinue={noop}
@@ -414,9 +404,9 @@ export const CantataFrame = () => {
         {previewScreen === 'productSummary' && (
           <ProductSummaryScreen
             drink={previewDrink}
-            volume={400}
-            addonIds={previewAddonIds}
-            quantity={1}
+            volume={selectedVolume}
+            addonIds={selectedAddonIds.length > 0 ? selectedAddonIds : previewAddonIds}
+            quantity={selectedQuantity}
             onBack={noop}
             onQuantityChange={noop}
             onAddToCart={noop}
@@ -427,7 +417,7 @@ export const CantataFrame = () => {
         )}
         {previewScreen === 'cart' && (
           <CartScreen
-            items={previewCart}
+            items={syncedCart}
             onBack={noop}
             onOpenCatalog={noop}
             onUpdateQuantity={noop}
@@ -436,11 +426,9 @@ export const CantataFrame = () => {
           />
         )}
         {previewScreen === 'checkout' && (
-          <CheckoutScreen items={previewCart} onBack={noop} onPay={noop} />
+          <CheckoutScreen items={syncedCart} onBack={noop} onPay={noop} />
         )}
-        {previewScreen === 'success' && (
-          <SuccessScreen items={previewCart} onHome={noop} />
-        )}
+        {previewScreen === 'success' && <SuccessScreen items={syncedCart} onHome={noop} />}
       </div>
     );
   };
@@ -449,9 +437,7 @@ export const CantataFrame = () => {
     <div className='cantata-showcase'>
       <section className='cantata-showcase-section'>
         <h2 className='cantata-showcase-section__title'>Интерактивный flow</h2>
-        <PhoneFrame label='Flow · кликабельный сценарий'>
-          {renderFlowScreen()}
-        </PhoneFrame>
+        <PhoneFrame label='Flow · кликабельный сценарий'>{renderFlowScreen()}</PhoneFrame>
       </section>
 
       <section className='cantata-showcase-section'>
