@@ -1,7 +1,8 @@
-import { execSync } from "node:child_process";
-import { cp, mkdtemp, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { execSync } from 'node:child_process';
+import { writeFile } from 'node:fs/promises';
 import { join } from "node:path";
+
+import ghpages from 'gh-pages';
 
 const root = process.cwd();
 const pagesDir = join(root, "build/pages");
@@ -9,20 +10,27 @@ const remote = execSync("git remote get-url origin", { cwd: root, encoding: "utf
 
 execSync("npm run build:pages", { stdio: "inherit", cwd: root });
 
-const workDir = await mkdtemp(join(tmpdir(), "gh-pages-"));
+await writeFile(join(pagesDir, ".nojekyll"), "");
 
-try {
-  await cp(pagesDir, workDir, { recursive: true });
-  await writeFile(join(workDir, ".nojekyll"), "");
+await new Promise((resolve, reject) => {
+  ghpages.publish(
+    pagesDir,
+    {
+      branch: "gh-pages",
+      repo: remote,
+      dotfiles: true,
+      history: false,
+      message: "deploy",
+    },
+    (error) => {
+      if (error) {
+        reject(error);
+        return;
+      }
 
-  execSync("git init", { cwd: workDir, stdio: "inherit" });
-  execSync(`git remote add origin ${remote}`, { cwd: workDir, stdio: "inherit" });
-  execSync("git checkout -b gh-pages", { cwd: workDir, stdio: "inherit" });
-  execSync("git add -A", { cwd: workDir, stdio: "inherit" });
-  execSync('git commit -m "deploy"', { cwd: workDir, stdio: "inherit" });
-  execSync("git push -f origin gh-pages", { cwd: workDir, stdio: "inherit" });
+      resolve();
+    },
+  );
+});
 
-  console.log("Deployed to gh-pages");
-} finally {
-  await rm(workDir, { recursive: true, force: true });
-}
+console.log("Deployed to gh-pages");
