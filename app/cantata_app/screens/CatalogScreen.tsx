@@ -4,15 +4,18 @@ import { catalogTabs, getCategoryTitle } from '~/cantata_app/data/categories';
 import { drinks } from '~/cantata_app/data/drinks';
 import type { CantataTab, CatalogCategory } from '~/cantata_app/types';
 
+import { BackButton } from '~/cantata_app/components/BackButton';
 import { BottomNav } from '~/cantata_app/components/BottomNav';
 import { CatalogProductCard } from '~/cantata_app/components/CatalogProductCard';
-import { IconFilter, IconSearch } from '~/cantata_app/components/icons';
+import { IconSearch } from '~/cantata_app/components/icons';
+import { StatusBar } from '~/cantata_app/components/StatusBar';
 
 type CatalogScreenProps = {
   activeTab: CantataTab;
   cartCount: number;
   initialCategory?: CatalogCategory;
   onTabChange: (tab: CantataTab) => void;
+  onBack: () => void;
   onSelectDrink: (id: string) => void;
   onQuickAdd: (id: string) => void;
 };
@@ -22,6 +25,7 @@ export const CatalogScreen = ({
   cartCount,
   initialCategory,
   onTabChange,
+  onBack,
   onSelectDrink,
   onQuickAdd,
 }: CatalogScreenProps) => {
@@ -50,16 +54,9 @@ export const CatalogScreen = ({
 
   return (
     <div className='cantata-sc'>
+      <StatusBar />
       <header className='cantata-shdr'>
-        <button
-          type='button'
-          className='cantata-hbtn cantata-hbtn--pill'
-          style={{ width: 'auto', padding: '0 12px', gap: 5, fontSize: 13, fontWeight: 600 }}
-          aria-label='Фильтр'
-        >
-          <IconFilter size={14} />
-          Фильтр
-        </button>
+        <BackButton onClick={onBack} variant='pill' />
         <span className='cantata-htitle'>{title}</span>
         <button type='button' className='cantata-hbtn' aria-label='Поиск'>
           <IconSearch />
@@ -82,7 +79,7 @@ export const CatalogScreen = ({
           </div>
         </div>
 
-        <div className='cantata-pgrid'>
+        <div className='cantata-pgrid cantata-pgrid-narrow'>
           {filteredDrinks.map((drink) => (
             <CatalogProductCard
               key={drink.id}

@@ -1,17 +1,15 @@
 import { useMemo, useState } from 'react';
 
-import { addons } from '~/cantata_app/data/addons';
 import { getDrinkMedia, getVolumePrice } from '~/cantata_app/data/drinks';
-import type { Drink, DrinkSize, ProductMode } from '~/cantata_app/types';
+import type { Drink, DrinkSize } from '~/cantata_app/types';
 
 import { BackButton } from '~/cantata_app/components/BackButton';
 import { CtaButton } from '~/cantata_app/components/CtaButton';
-import { IngredientRow } from '~/cantata_app/components/IngredientRow';
 import { IconCartAdd, IconHeart } from '~/cantata_app/components/icons';
 import { ProductHeroStories } from '~/cantata_app/components/ProductHeroStories';
 import { VolumeChip } from '~/cantata_app/components/VolumeChip';
 
-const VOLUME_OPTIONS = [300, 400, 500];
+const VOLUME_OPTIONS = [300, 400];
 
 const buildSizeOptions = (drink: Drink): DrinkSize[] =>
   VOLUME_OPTIONS.map((volume) => {
@@ -32,50 +30,23 @@ const buildSizeOptions = (drink: Drink): DrinkSize[] =>
 
 type ProductScreenProps = {
   drink: Drink;
-  mode: ProductMode;
   onBack: () => void;
-  onOrder: () => void;
-  onAddToCart: (drinkId: string, volume: number, addonIds: string[]) => void;
+  onChooseIngredients: (volume: number) => void;
+  onAddToCart: (volume: number) => void;
 };
 
 export const ProductScreen = ({
   drink,
-  mode,
   onBack,
-  onOrder,
+  onChooseIngredients,
   onAddToCart,
 }: ProductScreenProps) => {
   const sizeOptions = useMemo(() => buildSizeOptions(drink), [drink]);
   const heroMedia = useMemo(() => getDrinkMedia(drink), [drink]);
 
   const [selectedVolume, setSelectedVolume] = useState(() => drink.sizes[0]?.volume ?? 300);
-  const [selectedAddonIds, setSelectedAddonIds] = useState<string[]>([]);
-
-  const addonsTotal = useMemo(
-    () =>
-      addons
-        .filter((addon) => selectedAddonIds.includes(addon.id))
-        .reduce((sum, addon) => sum + addon.price, 0),
-    [selectedAddonIds],
-  );
 
   const volumePrice = getVolumePrice(drink, selectedVolume);
-  const displayPrice = volumePrice + (mode === 'addons' ? addonsTotal : 0);
-
-  const handlePrimaryAction = () => {
-    if (mode === 'addons') {
-      onAddToCart(drink.id, selectedVolume, selectedAddonIds);
-      return;
-    }
-
-    onOrder();
-  };
-
-  const handleToggleAddon = (id: string) => {
-    setSelectedAddonIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
-    );
-  };
 
   return (
     <div className='cantata-product-screen'>
@@ -103,50 +74,36 @@ export const ProductScreen = ({
 
       <div className='cantata-product-footer'>
         <div className='cantata-product-hero-caption'>
-          <p className='cantata-product-hero-caption__category'>
-            {mode === 'addons' ? 'Дополнительно' : drink.category}
-          </p>
+          <p className='cantata-product-hero-caption__category'>{drink.category} · Авторское меню</p>
           <h1 className='cantata-product-hero-caption__title'>{drink.displayName}</h1>
+          <p className='cantata-product-hero-caption__desc'>{drink.description}</p>
         </div>
 
-        <div className='cantata-product-bottom-sheet'>
-          {mode === 'detail' ? (
-            <>
-              <div className='cantata-product-bottom-sheet__volumes'>
-                {sizeOptions.map((size) => (
-                  <VolumeChip
-                    key={size.volume}
-                    volume={size.volume}
-                    price={getVolumePrice(drink, size.volume)}
-                    selected={selectedVolume === size.volume}
-                    onSelect={setSelectedVolume}
-                  />
-                ))}
-              </div>
+        <div className='cantata-product-bottom-sheet cantata-psheet'>
+          <div className='cantata-product-bottom-sheet__volumes'>
+            {sizeOptions.map((size) => (
+              <VolumeChip
+                key={size.volume}
+                volume={size.volume}
+                price={getVolumePrice(drink, size.volume)}
+                selected={selectedVolume === size.volume}
+                onSelect={setSelectedVolume}
+              />
+            ))}
+          </div>
 
-              <CtaButton onClick={handlePrimaryAction}>
-                <IconCartAdd />
-                Заказать · {displayPrice} ₽
-              </CtaButton>
-            </>
-          ) : (
-            <>
-              <div className='cantata-product-bottom-sheet__addons cantata-hide-scrollbar'>
-                {addons.map((addon) => (
-                  <IngredientRow
-                    key={addon.id}
-                    addon={addon}
-                    selected={selectedAddonIds.includes(addon.id)}
-                    onToggle={handleToggleAddon}
-                  />
-                ))}
-              </div>
+          <button
+            type='button'
+            onClick={() => onChooseIngredients(selectedVolume)}
+            className='cantata-secondary-cta'
+          >
+            Выбрать ингредиенты
+          </button>
 
-              <CtaButton onClick={handlePrimaryAction}>
-                <IconCartAdd />В корзину · {displayPrice} ₽
-              </CtaButton>
-            </>
-          )}
+          <CtaButton onClick={() => onAddToCart(selectedVolume)}>
+            <IconCartAdd />
+            В корзину · {volumePrice} ₽
+          </CtaButton>
         </div>
       </div>
     </div>

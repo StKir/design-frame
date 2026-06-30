@@ -1,13 +1,10 @@
-import { categoryGrid } from '~/cantata_app/data/categories';
-import { drinks } from '~/cantata_app/data/drinks';
+import { drinks, featuredDrink, popularDrinkIds } from '~/cantata_app/data/drinks';
 import { recentOrders } from '~/cantata_app/data/recentOrders';
 import type { CantataTab, CatalogCategory } from '~/cantata_app/types';
 
 import { BottomNav } from '~/cantata_app/components/BottomNav';
-import { CategoryCard } from '~/cantata_app/components/CategoryCard';
 import {
   IconChevronRight,
-  IconGift,
   IconMenu,
   IconPin,
   IconSearch,
@@ -15,6 +12,7 @@ import {
 } from '~/cantata_app/components/icons';
 import { PromoStrip } from '~/cantata_app/components/PromoStrip';
 import { RecentOrderCard } from '~/cantata_app/components/RecentOrderCard';
+import { StatusBar } from '~/cantata_app/components/StatusBar';
 
 type HomeScreenProps = {
   activeTab: CantataTab;
@@ -24,7 +22,54 @@ type HomeScreenProps = {
   onSelectDrink: (id: string) => void;
 };
 
-const heroImage = drinks[0]?.image;
+const miniCards = popularDrinkIds
+  .map((id) => drinks.find((drink) => drink.id === id))
+  .filter((drink) => drink !== undefined)
+  .slice(0, 6);
+
+const seasonalCards = miniCards.slice(0, 2);
+const frequentCards = miniCards.slice(2, 5);
+const energyCards = miniCards.slice(3, 6);
+
+const MiniSection = ({
+  title,
+  drinks: sectionDrinks,
+  onOpenCatalog,
+  onSelectDrink,
+}: {
+  title: string;
+  drinks: typeof miniCards;
+  onOpenCatalog?: () => void;
+  onSelectDrink: (id: string) => void;
+}) => (
+  <>
+    <div className='cantata-sec-row' style={{ marginTop: 20 }}>
+      <span className='cantata-sec-title'>{title}</span>
+      {onOpenCatalog && (
+        <button type='button' onClick={onOpenCatalog} className='cantata-sec-link'>
+          <IconChevronRight /> В каталог
+        </button>
+      )}
+    </div>
+    <div className='cantata-mini-scroll cantata-hide-scrollbar'>
+      {sectionDrinks.map((drink) => (
+        <button
+          key={`${title}-${drink.id}`}
+          type='button'
+          onClick={() => onSelectDrink(drink.id)}
+          className='cantata-mini-card cantata-card-press'
+        >
+          <span className='cantata-mini-card__ph'>
+            {drink.image ? <img src={drink.image} alt={drink.displayName} /> : '☕'}
+          </span>
+          <span className='cantata-mini-card__add'>+</span>
+          <span className='cantata-mini-card__nm'>{drink.displayName}</span>
+          <span className='cantata-mini-card__pr'>от {drink.basePrice} ₽</span>
+        </button>
+      ))}
+    </div>
+  </>
+);
 
 export const HomeScreen = ({
   activeTab,
@@ -34,6 +79,7 @@ export const HomeScreen = ({
   onSelectDrink,
 }: HomeScreenProps) => (
   <div className='cantata-sc'>
+    <StatusBar />
     <header className='cantata-shdr'>
       <button type='button' className='cantata-hbtn' aria-label='Меню'>
         <span style={{ color: 'var(--cinnamon)' }}>
@@ -44,7 +90,10 @@ export const HomeScreen = ({
         <span style={{ color: 'var(--cinnamon)' }}>
           <IconPin />
         </span>
-        Тульская Б., 13
+        <span>
+          Тульская Б., 13
+          <small>Открыто · 5 мин пешком</small>
+        </span>
       </div>
       <button type='button' className='cantata-hbtn' aria-label='Поиск'>
         <IconSearch />
@@ -53,7 +102,9 @@ export const HomeScreen = ({
 
     <div className='cantata-scont cantata-hide-scrollbar'>
       <div className='cantata-hero-band'>
-        {heroImage && <img src={heroImage} alt='' className='cantata-hero-band__img' />}
+        {featuredDrink?.image && (
+          <img src={featuredDrink.image} alt='' className='cantata-hero-band__img' />
+        )}
         <div className='cantata-hero-band__scrim' />
         <div className='cantata-hero-band__body'>
           <div className='cantata-hero-band__tag'>Сезон · 2026</div>
@@ -65,6 +116,21 @@ export const HomeScreen = ({
           <div className='cantata-hero-band__sub'>5 новых напитков в меню</div>
         </div>
       </div>
+
+      <button
+        type='button'
+        onClick={() => onSelectDrink('cherry-patchouli')}
+        className='cantata-status-card cantata-card-press'
+      >
+        <span className='cantata-status-card__thumb'>
+          {featuredDrink?.image && <img src={featuredDrink.image} alt='' />}
+        </span>
+        <span className='cantata-status-card__body'>
+          <strong>Латте «Вишня–Пачули»</strong>
+          <span className='cantata-status-card__status'>Готовится · ~4 минуты</span>
+        </span>
+        <em className='cantata-status-card__cta'>Детали</em>
+      </button>
 
       <div className='cantata-sec-row'>
         <span className='cantata-sec-title'>Недавно заказывали</span>
@@ -86,23 +152,34 @@ export const HomeScreen = ({
         subtitle='При заказе двух напитков'
         badge='−20%'
       />
-      <PromoStrip
-        variant='mint'
-        icon={<IconGift />}
-        title='Сироп в подарок'
-        subtitle='К любому кофейному напитку'
-        badge='Бесплатно'
+
+      <div className='cantata-loyalty-card'>
+        <div>
+          <span>До скидки</span>
+          <strong>25%</strong>
+        </div>
+        <div className='cantata-loyalty-card__bar'>
+          <span />
+        </div>
+        <p>осталось на 870 ₽</p>
+      </div>
+
+      <MiniSection
+        title='Новинки сезона'
+        drinks={seasonalCards}
+        onOpenCatalog={() => onOpenCatalog()}
+        onSelectDrink={onSelectDrink}
       />
-
-      <div className='cantata-sec-row' style={{ marginTop: 20 }}>
-        <span className='cantata-sec-title'>Каталог</span>
-      </div>
-
-      <div className='cantata-catgrid'>
-        {categoryGrid.map((category) => (
-          <CategoryCard key={category.id} category={category} onSelect={onOpenCatalog} />
-        ))}
-      </div>
+      <MiniSection
+        title='Чаще всего заказывают'
+        drinks={frequentCards}
+        onSelectDrink={onSelectDrink}
+      />
+      <MiniSection
+        title='Кофе для бодрого дня'
+        drinks={energyCards}
+        onSelectDrink={onSelectDrink}
+      />
     </div>
 
     <BottomNav activeTab={activeTab} cartCount={cartCount} onTabChange={onTabChange} />

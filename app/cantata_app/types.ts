@@ -1,6 +1,7 @@
 export type DrinkSize = {
   volume: number;
   calories: number;
+  price?: number;
 };
 
 export type DrinkMedia = {
@@ -33,7 +34,37 @@ export type Addon = {
   price: number;
 };
 
-export type CantataScreen = 'home' | 'catalog' | 'product' | 'cart';
+export type IngredientGroup = {
+  id: string;
+  title: string;
+  options: Addon[];
+};
+
+export type SweetItem = {
+  id: string;
+  emoji: string;
+  name: string;
+  price: number;
+};
+
+export type ProductSelection = {
+  drinkId: string;
+  volume: number;
+  addonIds: string[];
+  quantity: number;
+};
+
+export type CantataScreen =
+  | 'home'
+  | 'catalogSections'
+  | 'catalog'
+  | 'product'
+  | 'ingredients'
+  | 'productSummary'
+  | 'upsell'
+  | 'cart'
+  | 'checkout'
+  | 'success';
 
 export type CantataTab = 'home' | 'catalog' | 'stores' | 'cart' | 'profile';
 
@@ -46,6 +77,7 @@ export type CartItem = {
   addonIds: string[];
   quantity: number;
   unitPrice: number;
+  title?: string;
 };
 
 export type RecentOrder = {

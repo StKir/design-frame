@@ -10,8 +10,8 @@ type CatalogProductCardProps = {
 };
 
 export const CatalogProductCard = ({ drink, onSelect, onQuickAdd }: CatalogProductCardProps) => (
-  <div className='cantata-prdcrd'>
-    <div className='cantata-prdcrd__pl'>
+  <div className='cantata-prdcrd cantata-prdcrd-n'>
+    <div className='cantata-prdcrd__pl cantata-prdcrd-n__pl'>
       <button type='button' onClick={() => onSelect(drink.id)} className='h-full w-full'>
         {drink.image ? (
           <img src={drink.image} alt={drink.displayName} className='h-full w-full object-cover' />
@@ -22,18 +22,18 @@ export const CatalogProductCard = ({ drink, onSelect, onQuickAdd }: CatalogProdu
         )}
       </button>
     </div>
-    <div className='cantata-prdcrd__bd'>
+    <div className='cantata-prdcrd__bd cantata-prdcrd-n__bd'>
       <button type='button' onClick={() => onSelect(drink.id)} className='w-full text-left'>
-        <div className='cantata-prdcrd__cat'>{drink.category}</div>
-        <div className='cantata-prdcrd__nm'>{drink.displayName}</div>
+        <div className='cantata-prdcrd__cat cantata-prdcrd-n__cat'>{drink.category}</div>
+        <div className='cantata-prdcrd__nm cantata-prdcrd-n__nm'>{drink.displayName}</div>
         <div className='cantata-prdcrd__vol'>{getVolumeLabel(drink)}</div>
       </button>
-      <div className='cantata-prdcrd__ft'>
-        <div className='cantata-prdcrd__pr'>от {drink.basePrice} ₽</div>
+      <div className='cantata-prdcrd__ft cantata-prdcrd-n__ft'>
+        <div className='cantata-prdcrd__pr cantata-prdcrd-n__pr'>от {drink.basePrice} ₽</div>
         <button
           type='button'
           onClick={() => onQuickAdd(drink.id)}
-          className='cantata-prdcrd__add'
+          className='cantata-prdcrd__add cantata-prdcrd-n__go'
           aria-label={`Добавить ${drink.displayName}`}
         >
           <IconPlus />

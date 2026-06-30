@@ -20,9 +20,13 @@ export const getCartItemLabel = (item: CartItem) => {
 
   const addonNames = addons
     .filter((addon) => item.addonIds.includes(addon.id))
-    .map((addon) => addon.name);
+    .map((addon) => (addon.id === 'cow-milk' ? 'Коровье молоко' : addon.name));
 
   const options = [item.volume + ' мл', ...addonNames].join(' · ');
 
   return options;
 };
+
+export const getCartDiscount = (items: CartItem[]) => Math.round(getCartTotal(items) * 0.2);
+
+export const getCartPayableTotal = (items: CartItem[]) => getCartTotal(items) - getCartDiscount(items);

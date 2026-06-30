@@ -21,6 +21,7 @@ export const frames: FrameEntry[] = [
     id: 'cantata-app',
     name: 'Cantata',
     description: 'Мобильное приложение Cantata',
+    layout: 'showcase',
     component: CantataFrame,
   },
   {

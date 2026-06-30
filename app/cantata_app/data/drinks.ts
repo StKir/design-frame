@@ -14,6 +14,50 @@ const IMG_ASSAM_DETAIL =
 
 export const drinks: Drink[] = [
   {
+    id: 'cherry-patchouli',
+    category: 'ЛАТТЕ',
+    displayName: 'Вишня–Пачули',
+    name: 'ЛАТТЕ «ВИШНЯ–ПАЧУЛИ»',
+    description: 'Вишня, пачули, маракуйя. Готовим в горячем и холодном виде.',
+    sizes: [
+      { volume: 300, calories: 197, price: 350 },
+      { volume: 400, calories: 252, price: 430 },
+    ],
+    pastelAccent: '#F8EBEF',
+    image: IMG_CHEESE,
+    catalogCategory: 'signature',
+    catalogTab: 'signature',
+    media: [
+      {
+        type: 'video',
+        src: 'https://storage.yandexcloud.net/junktest/6530753_Coffee%20Woman%20Faceless%20Wellness_By_Content_Kiosk_Artlist_Vertical_HD.mp4',
+      },
+      { type: 'image', src: IMG_CHEESE, duration: 4500 },
+      { type: 'image', src: IMG_MATCHA, duration: 4500 },
+    ],
+    basePrice: 350,
+  },
+  {
+    id: 'pear-cappuccino',
+    category: 'КАПУЧИНО',
+    displayName: 'Груша со сливками',
+    name: 'КАПУЧИНО «ГРУША СО СЛИВКАМИ»',
+    description: 'Груша, сливки и мягкий кофейный профиль для быстрого повтора.',
+    sizes: [
+      { volume: 300, calories: 188 },
+      { volume: 400, calories: 244 },
+    ],
+    pastelAccent: '#F5F2DD',
+    image: IMG_SALTED,
+    catalogCategory: 'coffee',
+    catalogTab: 'cappuccino',
+    media: [
+      { type: 'image', src: IMG_SALTED },
+      { type: 'image', src: IMG_HALVA, duration: 4500 },
+    ],
+    basePrice: 320,
+  },
+  {
     id: 'salted-caramel',
     category: 'КАПУЧИНО',
     displayName: 'Крафтовая солёная карамель',
@@ -139,7 +183,24 @@ export const getVolumeLabel = (drink: Drink) =>
   drink.sizes.map((size) => size.volume).join(' / ') + ' мл';
 
 export const getVolumePrice = (drink: Drink, volume: number) => {
+  const exactSize = drink.sizes.find((size) => size.volume === volume);
+
+  if (exactSize?.price) {
+    return exactSize.price;
+  }
+
   const baseVolume = drink.sizes[0]?.volume ?? 300;
 
   return Math.round(drink.basePrice * (volume / baseVolume));
 };
+
+export const featuredDrink = drinks[0];
+
+export const popularDrinkIds = [
+  'pear-cappuccino',
+  'cherry-patchouli',
+  'matcha-coconut',
+  'cheese-latte',
+  'hvala-halva',
+  'salted-caramel',
+];
