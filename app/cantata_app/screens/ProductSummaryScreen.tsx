@@ -50,12 +50,9 @@ export const ProductSummaryScreen = ({
 
       <div className='cantata-product-summary-sheet cantata-psheet'>
         <div className='cantata-pcategory'>{drink.category} · Авторское меню</div>
-        <h1 className='cantata-pname cantata-pname--compact'>{drink.displayName}</h1>
-        <div className='cantata-volrow cantata-volrow--compact'>
-          <span className='cantata-vchip cantata-vchip--on'>
-            {volume} мл
-            <span className='cantata-vchip__ml'>{unitPrice} ₽</span>
-          </span>
+        <div className='cantata-summary-title-row'>
+          <h1 className='cantata-pname cantata-pname--compact'>{drink.displayName}</h1>
+          <span className='cantata-summary-volume'>{volume} мл</span>
         </div>
 
         <div className='cantata-inggrp'>

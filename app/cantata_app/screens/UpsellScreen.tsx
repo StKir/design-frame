@@ -18,7 +18,6 @@ export const UpsellScreen = ({ drink, onAddSweet, onSkip }: UpsellScreenProps) =
 
     <div className='cantata-upsell-sheet cantata-psheet'>
       <div className='cantata-pcategory'>К напитку подойдёт</div>
-      <h1 className='cantata-pname cantata-pname--compact'>{drink.displayName}</h1>
       <div className='cantata-upsell-list cantata-hide-scrollbar'>
         {sweetItems.map((item) => (
           <button
@@ -30,7 +29,6 @@ export const UpsellScreen = ({ drink, onAddSweet, onSkip }: UpsellScreenProps) =
             <span className='cantata-upsell-card__emoji'>{item.emoji}</span>
             <span className='cantata-upsell-card__name'>{item.name}</span>
             <span className='cantata-upsell-card__price'>{item.price} ₽</span>
-            <span className='cantata-upsell-card__cta'>В корзину</span>
           </button>
         ))}
       </div>
