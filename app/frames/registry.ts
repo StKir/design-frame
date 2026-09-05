@@ -3,10 +3,12 @@ import type { ComponentType } from 'react';
 import { CantataFrame } from '~/cantata_app/frame';
 import { CoachFrame } from '~/coach_app/frame';
 import { FormaFrame } from '~/forma_app/frame';
+import { OrigamiFrame } from '~/origami_app/frame';
 import { PayFrame } from '~/pay_app/frame';
+import { TempkeyFrame } from '~/tempkey_app/frame';
 import { VaultFrame } from '~/vault_app/frame';
 
-export type FrameLayout = 'single' | 'showcase';
+export type FrameLayout = 'single' | 'showcase' | 'desktop';
 
 export type FrameEntry = {
   id: string;
@@ -51,6 +53,20 @@ export const frames: FrameEntry[] = [
     description: 'База знаний с ИИ и RAG-контейнерами',
     layout: 'showcase',
     component: VaultFrame,
+  },
+  {
+    id: 'tempkey-app',
+    name: 'TempKey',
+    description: 'Тренажёр печати на скорость',
+    layout: 'showcase',
+    component: TempkeyFrame,
+  },
+  {
+    id: 'origami-app',
+    name: 'Atelier',
+    description: 'Пошаговые туториалы по архитектурной графике',
+    layout: 'desktop',
+    component: OrigamiFrame,
   },
 ];
 

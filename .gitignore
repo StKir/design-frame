@@ -1,6 +1,10 @@
 .DS_Store
 .env
 /node_modules/
+/app/origami_app/tutorials/pipline/runs/*
+!/app/origami_app/tutorials/pipline/runs/.gitkeep
+/app/origami_app/tutorials/course/data/*
+!/app/origami_app/tutorials/course/data/.gitkeep
 
 # React Router
 /.react-router/

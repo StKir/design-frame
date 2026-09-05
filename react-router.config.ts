@@ -11,12 +11,13 @@ const frameIds = [
   "coach-app",
   "pay-app",
   "vault-app",
+  "origami-app",
 ];
 
 export default {
-  ssr: false,
+  ssr: !isGitHubPages,
   basename: isGitHubPages ? "/design-frame/" : "/",
-  prerender: ["/", ...frameIds.map((id) => `/frames/${id}`)],
+  prerender: isGitHubPages ? ["/", ...frameIds.map((id) => `/frames/${id}`)] : [],
   future: {
     v8_middleware: true,
     v8_passThroughRequests: true,

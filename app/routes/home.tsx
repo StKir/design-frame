@@ -16,6 +16,12 @@ const Home = () => (
       <p className="mt-2 text-gray-600 dark:text-gray-400">
         Выберите фрейм для просмотра и редактирования
       </p>
+      <Link
+        to="/admin/pipeline"
+        className="mt-4 inline-flex rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 transition hover:border-gray-300 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100"
+      >
+        Pipeline Admin (Atelier)
+      </Link>
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
         {frames.map((frame) => (
           <Link

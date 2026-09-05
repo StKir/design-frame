@@ -1,3 +1,4 @@
+import { FrameDesktopViewport } from "~/components/frame-desktop-viewport";
 import { FrameShowcaseViewport } from "~/components/frame-showcase-viewport";
 import { FrameViewport } from "~/components/frame-viewport";
 import { getFrameById } from "~/frames/registry";
@@ -32,7 +33,11 @@ const FramePage = ({ params }: Route.ComponentProps) => {
 
   const FrameComponent = frame.component;
   const Viewport =
-    frame.layout === "showcase" ? FrameShowcaseViewport : FrameViewport;
+    frame.layout === "showcase"
+      ? FrameShowcaseViewport
+      : frame.layout === "desktop"
+        ? FrameDesktopViewport
+        : FrameViewport;
 
   return (
     <Viewport>

@@ -1,0 +1,646 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap');
+
+.tempkey-root {
+  --tempkey-ink: #0b1220;
+  --tempkey-muted: #5c6578;
+  --tempkey-faint: #9aa3b5;
+  --tempkey-line: rgba(11, 18, 32, 0.08);
+  --tempkey-surface: rgba(255, 255, 255, 0.62);
+  --tempkey-surface-strong: rgba(255, 255, 255, 0.82);
+  --tempkey-accent: #e85d3b;
+  --tempkey-accent-soft: rgba(232, 93, 59, 0.14);
+  --tempkey-correct: #1f8a5b;
+  --tempkey-mist-top: #f4f1ec;
+  --tempkey-mist-mid: #eef2f7;
+  --tempkey-mist-bot: #e8e4f0;
+  --tempkey-display: 'Syne', system-ui, sans-serif;
+  --tempkey-sans: 'DM Sans', system-ui, sans-serif;
+  --tempkey-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --tempkey-r-sm: 10px;
+  --tempkey-r-md: 14px;
+  --tempkey-r-lg: 20px;
+  --tempkey-r-xl: 28px;
+  --tempkey-pad: 6px;
+
+  font-family: var(--tempkey-sans);
+  color: var(--tempkey-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes tempkey-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tempkey-tile-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tempkey-passage-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes tempkey-caret-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+@keyframes tempkey-key-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 93, 59, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 3px var(--tempkey-accent-soft);
+  }
+}
+
+.tempkey-screen {
+  position: relative;
+  height: 844px;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 80% at 80% -10%, rgba(232, 93, 59, 0.12), transparent 55%),
+    linear-gradient(165deg, var(--tempkey-mist-top) 0%, var(--tempkey-mist-mid) 48%, var(--tempkey-mist-bot) 100%);
+}
+
+.tempkey-screen-enter {
+  animation: tempkey-fade-in 400ms ease-out both;
+}
+
+.tempkey-screen__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding: 0 24px 28px;
+}
+
+.tempkey-sbar {
+  display: flex;
+  height: 44px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 4px;
+}
+
+.tempkey-sbar__time {
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--tempkey-ink);
+}
+
+.tempkey-sbar__icons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--tempkey-ink);
+}
+
+.tempkey-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 44px;
+  margin-top: 4px;
+}
+
+.tempkey-icon-btn {
+  position: relative;
+  display: inline-flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--tempkey-r-md);
+  background: transparent;
+  color: var(--tempkey-ink);
+  cursor: pointer;
+  transition-property: transform, background-color, color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.tempkey-icon-btn:hover {
+  background: var(--tempkey-surface);
+}
+
+.tempkey-icon-btn:active {
+  transform: scale(0.96);
+}
+
+.tempkey-icon-btn svg {
+  display: block;
+}
+
+.tempkey-home {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding-top: 12px;
+  padding-bottom: 4px;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.tempkey-home::-webkit-scrollbar {
+  display: none;
+}
+
+.tempkey-brand {
+  margin: 0;
+  font-family: var(--tempkey-display);
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  color: var(--tempkey-ink);
+}
+
+.tempkey-tagline {
+  margin: 10px 0 0;
+  max-width: 240px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-wrap: pretty;
+  color: var(--tempkey-muted);
+}
+
+.tempkey-home__cta {
+  margin-top: 24px;
+}
+
+.tempkey-section__title {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tempkey-faint);
+}
+
+.tempkey-btn {
+  display: flex;
+  width: 100%;
+  min-height: 56px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--tempkey-r-lg);
+  background: var(--tempkey-accent);
+  color: #fff;
+  font-family: var(--tempkey-sans);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(232, 93, 59, 0.28);
+  transition-property: transform, background-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.tempkey-btn:hover {
+  background: #de5232;
+}
+
+.tempkey-btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 6px 16px rgba(232, 93, 59, 0.22);
+}
+
+.tempkey-home__modes {
+  margin-top: 18px;
+}
+
+.tempkey-home__themes {
+  margin-top: 18px;
+}
+
+.tempkey-theme-picker {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.tempkey-theme {
+  position: relative;
+  display: flex;
+  min-height: 62px;
+  padding: 3px;
+  border: none;
+  border-radius: 18px;
+  background: rgba(11, 18, 32, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(11, 18, 32, 0.05);
+  cursor: pointer;
+  text-align: left;
+  animation: tempkey-tile-rise 640ms cubic-bezier(0.32, 0.72, 0, 1) both;
+  transition-property: transform, background-color, box-shadow;
+  transition-duration: 420ms;
+  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.tempkey-theme:hover {
+  transform: translateY(-1px);
+  background: rgba(11, 18, 32, 0.06);
+}
+
+.tempkey-theme:active {
+  transform: scale(0.98);
+}
+
+.tempkey-theme--wide {
+  grid-column: span 2;
+  min-height: 54px;
+}
+
+.tempkey-theme__core {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 12px 14px;
+  border-radius: 15px;
+  background: var(--tempkey-surface-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 8px 20px rgba(11, 18, 32, 0.04);
+  transition-property: background-color, color, box-shadow;
+  transition-duration: 420ms;
+  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.tempkey-theme__label {
+  font-family: var(--tempkey-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--tempkey-ink);
+  text-wrap: balance;
+}
+
+.tempkey-theme__hint {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--tempkey-faint);
+  transition-property: color;
+  transition-duration: 420ms;
+  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.tempkey-theme--active {
+  background: rgba(232, 93, 59, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(232, 93, 59, 0.18);
+}
+
+.tempkey-theme--active .tempkey-theme__core {
+  background: var(--tempkey-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 10px 24px rgba(11, 18, 32, 0.18);
+}
+
+.tempkey-theme--active .tempkey-theme__label {
+  color: #fff;
+}
+
+.tempkey-theme--active .tempkey-theme__hint {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.tempkey-theme--wide .tempkey-theme__core {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.tempkey-mode-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--tempkey-pad);
+  padding: var(--tempkey-pad);
+  border-radius: calc(var(--tempkey-r-md) + var(--tempkey-pad));
+  background: var(--tempkey-surface);
+  border: 1px solid var(--tempkey-line);
+}
+
+.tempkey-mode {
+  display: flex;
+  min-height: 48px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 6px;
+  border: none;
+  border-radius: var(--tempkey-r-md);
+  background: transparent;
+  color: var(--tempkey-muted);
+  cursor: pointer;
+  transition-property: transform, background-color, color;
+  transition-duration: 160ms;
+  transition-timing-function: ease-out;
+}
+
+.tempkey-mode:active {
+  transform: scale(0.96);
+}
+
+.tempkey-mode__label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.tempkey-mode__hint {
+  font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--tempkey-faint);
+  transition-property: color;
+  transition-duration: 160ms;
+  transition-timing-function: ease-out;
+}
+
+.tempkey-mode--active {
+  background: var(--tempkey-ink);
+  color: #fff;
+}
+
+.tempkey-mode--active .tempkey-mode__hint {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.tempkey-home__scores {
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.tempkey-scores {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 14px;
+  border-radius: var(--tempkey-r-lg);
+  background: var(--tempkey-surface-strong);
+  border: 1px solid var(--tempkey-line);
+}
+
+.tempkey-score-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--tempkey-line);
+}
+
+.tempkey-score-row:last-child {
+  border-bottom: none;
+}
+
+.tempkey-score-row__mode {
+  font-size: 15px;
+  font-weight: 600;
+  text-wrap: pretty;
+  color: var(--tempkey-ink);
+}
+
+.tempkey-score-row__stats {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.tempkey-score-row__wpm {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tempkey-ink);
+}
+
+.tempkey-score-row__acc {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tempkey-muted);
+}
+
+.tempkey-game-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  margin-top: 4px;
+}
+
+.tempkey-game-top__meta {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.tempkey-game-top__mode {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tempkey-faint);
+}
+
+.tempkey-game-top__timer {
+  font-family: var(--tempkey-display);
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--tempkey-ink);
+}
+
+.tempkey-game-spacer {
+  width: 44px;
+}
+
+.tempkey-live-stats {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-top: 18px;
+}
+
+.tempkey-live-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.tempkey-live-stat__value {
+  font-family: var(--tempkey-display);
+  font-size: 28px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--tempkey-ink);
+}
+
+.tempkey-live-stat__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tempkey-faint);
+}
+
+.tempkey-game-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  padding: 20px 0 12px;
+}
+
+.tempkey-passage {
+  animation: tempkey-passage-rise 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  font-family: var(--tempkey-mono);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.tempkey-passage__char {
+  color: var(--tempkey-faint);
+}
+
+.tempkey-passage__char--done {
+  color: var(--tempkey-correct);
+}
+
+.tempkey-passage__char--current {
+  position: relative;
+  color: var(--tempkey-ink);
+  background: var(--tempkey-accent-soft);
+  border-radius: 3px;
+}
+
+.tempkey-input-line {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: var(--tempkey-r-lg);
+  background: var(--tempkey-surface-strong);
+  border: 1px solid var(--tempkey-line);
+  font-family: var(--tempkey-mono);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.tempkey-input-line__typed {
+  color: var(--tempkey-ink);
+}
+
+.tempkey-input-line__caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 1px;
+  margin-right: 1px;
+  vertical-align: text-bottom;
+  background: var(--tempkey-accent);
+  animation: tempkey-caret-pulse 1s ease-in-out infinite;
+}
+
+.tempkey-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  border-radius: calc(var(--tempkey-r-md) + 10px);
+  background: var(--tempkey-surface);
+  border: 1px solid var(--tempkey-line);
+}
+
+.tempkey-keyboard__row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.tempkey-key {
+  display: flex;
+  min-width: 28px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  border-radius: var(--tempkey-r-sm);
+  background: var(--tempkey-surface-strong);
+  border: 1px solid var(--tempkey-line);
+  font-family: var(--tempkey-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tempkey-muted);
+  transition-property: transform, background-color, color, border-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.tempkey-key--wide {
+  min-width: 48px;
+}
+
+.tempkey-key--next {
+  background: var(--tempkey-accent);
+  border-color: transparent;
+  color: #fff;
+  animation: tempkey-key-glow 1.4s ease-in-out infinite;
+}
+
+.tempkey-key--space {
+  flex: 1;
+  max-width: 160px;
+}
