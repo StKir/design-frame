@@ -1,0 +1,1 @@
+import{w as t,j as e}from"./jsx-runtime-CDlp15ds.js";import{D as m}from"./frame-BqFybsl8.js";const i=()=>[{title:"Дилема"},{name:"description",content:"Что бы ты выбрал? Дилеммы от нейросети"}],o=()=>e.jsx("div",{className:"h-dvh w-full overflow-hidden bg-[#f3f4f6]",children:e.jsx(m,{})}),n=t(o);export{n as default,i as meta};
